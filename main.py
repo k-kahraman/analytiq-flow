@@ -24,7 +24,7 @@ def main():
             df_filtered = filter_dataframe(df)
             if not df_filtered.empty:
                 st.write("Filtered Data:")
-                st.dataframe(df_filtered.head())
+                st.dataframe(df_filtered)
 
                 # Add sections for statistical and correlation analysis
                 add_statistical_analysis(df_filtered)

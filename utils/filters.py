@@ -19,15 +19,6 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         return df
 
     df = df.copy()
-
-    # Conversion checks and operations for datetime and categorical data
-    for col in df.columns:
-        if is_string_dtype(df[col]):
-            try:
-                df[col] = pd.to_datetime(df[col], errors='coerce')
-            except Exception:
-                pass
-
     modification_container = st.container()
 
     with modification_container:
@@ -52,5 +43,10 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
                     "Select date range for " + column, [start_date, end_date])
                 df = df[(df[column] >= pd.to_datetime(start_select))
                         & (df[column] <= pd.to_datetime(end_select))]
+            else:  # Add support for text and other data types that are neither numeric nor datetime
+                text_values = st.text_input(
+                    f"Enter text to filter for {column}")
+                if text_values:
+                    df = df[df[column].str.contains(text_values, na=False)]
 
     return df
